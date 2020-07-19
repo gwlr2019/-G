@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html, body {
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="l7-map"></div>
+  <script src="https://unpkg.com/@antv/l7"></script>
+  <script>
+    const scene = new L7.Scene({
+      id: 'l7-map',
+      map: new L7.GeodeMap({
+        style: 'dark',
+        center: [120, 30],
+        pitch: 0,
+        zoom: 6,
+        token: '***'
+      })
+    });
+    scene.on('loaded', function() {
+      fetch('../').then(res => res.json()).then(data => {
+        data.features = data.features.filter(item => item.properties.capacity > 10000)
+        const pointLayer = new L7.pointLayer({})
+          .source(data)
+          .shape('triangle')
+          .size('capacity', [0, 16])
+          .color('capacity', [
+            'red',
+            'blue',
+            'green'
+          ]).style({
+            strokeWidth: 0,
+            opacity: 0.5
+          })
+          .active(true);
+          scene.addLayer(pointLayer)
+      })
+      .active(true);
+    })
+    scene.addLayer
+  </script>
+</body>
+</html>
